@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <title>Магазин Одягу</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding: 10px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu-icon {
+    font-size: 2rem;
+    display: none;
+    cursor: pointer;
+}
+
+.menu {
+    display: flex;
+    gap: 1rem;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+}
+
+#menu-toggle {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    #menu-toggle:checked + .menu-icon + .menu {
+        display: flex;
+    }
+
+    .menu-icon {
+        display: block;
+    }
+}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .nav-links li {
+            margin: 0 10px;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+        }
+        .menu-toggle span {
+            display: block;
+            width: 30px;
+            height: 3px;
+            background: #fff;
+            margin: 5px 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        .product-grid {
+            display: grid;
+            background: url(images/Снимок\ экрана\ 2024-07-29\ 144826.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 100px;
+            justify-content: center; /* Центрирование блоков */
+        }
+        .product {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            background: #f9f9f9;
+            border-radius: 8px;
+            position: relative; /* Для позиционирования кнопки лайка */
+        }
+        .product h2 {
+            margin-top: 8px;
+        }
+        .product img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .product .button-active {
+            margin-top: 10px;
+            padding: 10px;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .product .button-active:hover {
+            background: #555;
+        }
+        .like-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f9f9f9;
+            color: #fff;
+            border: 1px solid #ddd;;
+            border-radius: 10px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        .like-button:hover {
+            background: #bdbdbd;
+        }
+        footer {
+            background: #333;
+            color: #fff;
+            border-top-right-radius: 20px;
+            border-top-left-radius: 20px;
+            
+        }
+        .footer {
+            background: #333;
+            color: #fff;
+            padding: 10px 0px;
+            width: 100%;
+            text-align: center; /* Центрирование текста */
+            position: relative;
+            bottom: 0;
+            scale: 90%;
+        }
+        .footer-content {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        max-width: 1200px;
+        margin: 0 auto;
+        color: #fff;
+        scale: 90%;
+    }
+    .footer-content > div {
+        flex: 1;
+        margin: 10px;
+        min-width: 100px;
+    }
+    .footer-content h3 {
+        border-bottom: 2px solid #fff;
+        padding-bottom: 10px;
+    }
+    .footer-content ul {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-content ul li a {
+        color: #fff;
+        text-decoration: none;
+    }
+    .footer-content ul li a:hover {
+        text-decoration: underline;
+    }
+    .footer-social a {
+        color: #fff;
+        text-decoration: none;
+    }
+    .footer-social a:hover {
+        text-decoration: underline;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+    .modal-content {
+            background: #fff;
+            margin: 6% 10%;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            height: auto;
+            max-width: 810px;
+        }
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+        }
+        .modal .close {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .contact-form form {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-form input, .contact-form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .contact-form button {
+            padding: 10px;
+            border: none;
+            background: #333;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .contact-form button:hover {
+            background: #555;
+        }
+        .contact h2 {
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .logo {
+                text-align: start;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                scale: 110%;
+                padding: 20px;
+            }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .product-grid {
+                gap: 20px;
+            }
+            .modal-content {
+            margin: 5%;
+            }}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+        <nav>
+            <div class="lines" style="display: flex; flex-direction: row;">
+            <div class="logo">Магазин одягу</div>
+            <div class="menu-toggle" style="margin-left: 30px;margin-top: 4px;" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Головна</a></li>
+                <li><a href="#clothing">Одяг</a></li>
+                <li><a href="#kids">Діти</a></li>
+                <li><a href="#accessories">Аксесуари</a></li>
+                <li><a href="#shoes">Взуття</a></li>
+                <li><a href="#sale">Розпродаж</a></li>
+                <li><a href="#contact">Контакти</a></li>
+            </ul>
+        </nav>
+        </div>
+    </header>
+    <div class="content container">
+        <section id="home">
+            <h1>Ласкаво просимо до нашого магазину одягу!</h1>
+            <p>Відкрийте для себе наш широкий асортимент одягу, аксесуарів та взуття.</p>
+        </section>
+        <section id="clothing">
+            <h2 style="margin-top: 8px;">Одяг</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/White T.jpg" alt="Футболка">
+                    <h2>Футболка</h2>
+                    <p>Ціна: 500 грн</p>
+                    <p>Опис: Високоякісна футболка з м'якої бавовни, ідеальна для щоденного носіння.</p>
+                    <button class="button-active" onclick="openModal('modal1')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal1buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/Jeans.jpg" alt="Штани">
+                    <h2>Штани</h2>
+                    <p>Ціна: 1000 грн</p>
+                    <p>Опис: Зручні штани з деніму, ідеальні для щоденного носіння.</p>
+                    <button class="button-active" onclick="openModal('modal2')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal2buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/kurtka.jpg" alt="Куртка">
+                    <h2>Куртка</h2>
+                    <p>Ціна: 3000 грн</p>
+                    <p>Опис: Тепла куртка для прохолодної погоди, з високоякісних матеріалів.</p>
+                    <button class="button-active" onclick="openModal('modal3')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal3buy')">Купити</button>
+                </div>
+            </div>
+        </section>
+        <section id="kids">
+            <h2 style="margin-top: 8px;">Одяг для дітей</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/Kids T.jpg" alt="Дитяча футболка">
+                    <h2>Дитяча футболка</h2>
+                    <p>Ціна: 250 грн</p>
+                    <p>Опис: Яскрава футболка для дітей з м'якої бавовни.</p>
+                    <button class="button-active" onclick="openModal('modal4')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal4buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/kids pants.jpg" alt="Дитячі штани">
+                    <h2>Дитячі штани</h2>
+                    <p>Ціна: 500 грн</p>
+                    <p>Опис: Зручні штани для дітей з м'якого матеріалу.</p>
+                    <button class="button-active" onclick="openModal('modal5')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal5buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/комбинизон.jpg" alt="Шапка">
+                    <h2>Комбінізон</h2>
+                    <p>Ціна: 150 грн</p>
+                    <p>Опис: Стильна шапка для холодної погоди.</p>
+                    <button class="button-active" onclick="openModal('modal6')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal6buy')">Купити</button>
+                </div>
+            </div>
+        </section>
+        <section id="accessories">
+            <h2 style="margin-top: 8px;">Аксесуари</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/очки.jpg" alt="Шапка">
+                    <h2>Окуляри</h2>
+                    <p>Ціна: 150 грн</p>
+                    <p>Опис: Стильна шапка для холодної погоди.</p>
+                    <button class="button-active" onclick="openModal('modal7')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal7buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/шапка.jpg" alt="Шапка">
+                    <h2>Шапка</h2>
+                    <p>Ціна: 150 грн</p>
+                    <p>Опис: Стильна шапка для холодної погоди.</p>
+                    <button class="button-active" onclick="openModal('modal8')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal8buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/шарф.jpg" alt="Шарф">
+                    <h2>Шарф</h2>
+                    <p>Ціна: 200 грн</p>
+                    <p>Опис: Теплий шарф з якісної вовни.</p>
+                    <button class="button-active" onclick="openModal('modal9')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal9buy')">Купити</button>
+                </div>
+            </div>
+        </section>
+        <section id="shoes">
+            <h2 style="margin-top: 8px;">Взуття</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/босоножки.jpg" alt="Шапка">
+                    <h2>Босоніжки</h2>
+                    <p>Ціна: 150 грн</p>
+                    <p>Опис: Стильна шапка для холодної погоди.</p>
+                    <button class="button-active" onclick="openModal('modal10')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal10buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/кросовки.jpg" alt="Кросівки">
+                    <h2>Кросівки</h2>
+                    <p>Ціна: 1200 грн</p>
+                    <p>Опис: Зручні кросівки для щоденного носіння.</p>
+                    <button class="button-active" onclick="openModal('modal11')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal11buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="images/туфли.jpg" alt="Ботинки">
+                    <h2>Туфлі</h2>
+                    <p>Ціна: 2500 грн</p>
+                    <p>Опис: Міцні ботинки для холодної погоди.</p>
+                    <button class="button-active" onclick="openModal('modal12')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal12buy')">Купити</button>
+                </div>
+            </div>
+        </section>
+        <section id="sale">
+            <h2 style="margin-top: 8px;">Розпродаж</h2>
+            <div class="product-grid">
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="hat.jpg" alt="Шапка">
+                    <h2>Розпродаж 1</h2>
+                    <p>Ціна: 150 грн</p>
+                    <p>Опис: Стильна шапка для холодної погоди.</p>
+                    <button class="button-active" onclick="openModal('modal13')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal13buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="sale_item1.jpg" alt="Розпродаж 1">
+                    <h2>Розпродаж 2</h2>
+                    <p>Ціна: 800 грн (знижка 20%)</p>
+                    <p>Опис: Спеціальна пропозиція на популярний товар.</p>
+                    <button class="button-active" onclick="openModal('modal14')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal14buy')">Купити</button>
+                </div>
+                <div class="product">
+                    <button class="like-button"><img src="images/like.png" alt="like"></button>
+                    <img src="sale_item2.jpg" alt="Розпродаж 2">
+                    <h2>Розпродаж 3</h2>
+                    <p>Ціна: 600 грн (знижка 30%)</p>
+                    <p>Опис: Супер ціна на ще один популярний товар.</p>
+                    <button class="button-active" onclick="openModal('modal15')">Детальніше</button>
+                    <button class="button-active" onclick="openModal('modal15buy')">Купити</button>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <h2 style="margin-top: 10px;">Контакти</h2>
+            <div class="contact-form">
+                <form>
+                    <label for="name">Ім'я:</label>
+                    <input type="text" id="name" name="name" required>
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    <label for="message">Повідомлення:</label>
+                    <textarea id="message" name="message" rows="4" required></textarea>
+                    <button type="submit"><a style="color: white; text-decoration: none;" href="send.html">Відправити</a></button>
+                </form>
+            </div>
+        </section>
+    </div>
+    <footer class="container">
+        <div class="row gx-0" style="padding-top: 10px;">
+             <div class="footer-content col-md-6">
+                        <div>
+                            <h3>Про нас</h3>
+                            <p>Магазин одягу з широким вибором продукції для усієї родини.</p>
+                        </div>
+                        <div>
+               <h3>Слідкуйте за нами</h3>
+            <ul style="display: flex;flex-direction: row;">
+            <li><a href="index.html" target="_blank"><img style="margin: 5px; width: 36px; height: 36px;" src="images/7693324_telegram_social media_logo_messenger_icon.png" alt=""></a></li>
+            <li><a href="index.html" target="_blank"><img style="margin: 5px; width: 36px; height: 36px;" src="images/5282544_camera_instagram_social media_social network_instagram logo_icon.png" alt=""></a></li>
+            <li><a href="index.html" target="_blank"><img style="margin: 5px; width: 36px; height: 36px;" src="images/104847_gmail_icon.png" alt=""></a></li>
+            </ul> 
+            </div>
+                    </div>
+
+        <div class="footer-content col-md-6 ">
+            <div>
+                <h3>Меню</h3>
+                <ul>
+                    <li><a href="#home">Головна</a></li>
+                    <li><a href="#clothing">Одяг</a></li>
+                    <li><a href="#kids">Діти</a></li>
+                    <li><a href="#accessories">Аксесуари</a></li>
+                    <li><a href="#shoes">Взуття</a></li>
+                    <li><a href="#sale">Розпродаж</a></li>
+                    <li><a href="#contact">Контакти</a></li>
+                </ul>
+            </div>
+            <div>
+                            <h3>Контакти</h3>
+                            <ul>
+                                <li>Телефон: +38 012 345 6789</li>
+                                <li>Електронна пошта: info@shop.com</li>
+                                <li>Адреса: вул. Модерна, 1, Київ</li>
+                            </ul>
+                        </div>
+        </div>
+        </div>
+    </div>
+        <div class="footer"><p>&copy; 2024 Магазин Одягу. Всі права захищені. 31.07.24</p></div>
+    </footer>
+    <!-- Модальні вікна -->
+    <div id="modal1" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal1')">&times;</span>
+            <h2>Футболка</h2>
+            <img src="shirt.jpg" alt="Футболка">
+            <p>Опис: Високоякісна футболка з м'якої бавовни, ідеальна для щоденного носіння.</p>
+            <p>Ціна: 500 грн</p>
+        </div>
+    </div>
+    <div id="modal2" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal2')">&times;</span>
+            <h2>Штани</h2>
+            <img src="pants.jpg" alt="Штани">
+            <p>Опис: Зручні штани з деніму, ідеальні для щоденного носіння.</p>
+            <p>Ціна: 1000 грн</p>
+        </div>
+    </div>
+    <div id="modal3" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal3')">&times;</span>
+            <h2>Куртка</h2>
+            <img src="jacket.jpg" alt="Куртка">
+            <p>Опис: Тепла куртка для прохолодної погоди, з високоякісних матеріалів.</p>
+            <p>Ціна: 3000 грн</p>
+        </div>
+    </div>
+    <div id="modal4" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal4')">&times;</span>
+            <h2>Дитяча футболка</h2>
+            <img src="kids_shirt.jpg" alt="Дитяча футболка">
+            <p>Опис: Яскрава футболка для дітей з м'якої бавовни.</p>
+            <p>Ціна: 250 грн</p>
+        </div>
+    </div>
+    <div id="modal5" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal5')">&times;</span>
+            <h2>Дитячі штани</h2>
+            <img src="kids_pants.jpg" alt="Дитячі штани">
+            <p>Опис: Зручні штани для дітей з м'якого матеріалу.</p>
+            <p>Ціна: 500 грн</p>
+        </div>
+    </div>
+    <div id="modal6" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal6')">&times;</span>
+            <h2>Шапка</h2>
+            <img src="hat.jpg" alt="Шапка">
+            <p>Опис: Стильна шапка для холодної погоди.</p>
+            <p>Ціна: 150 грн</p>
+        </div>
+    </div>
+    <div id="modal7" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal7')">&times;</span>
+            <h2>Шарф</h2>
+            <img src="scarf.jpg" alt="Шарф">
+            <p>Опис: Теплий шарф з якісної вовни.</p>
+            <p>Ціна: 200 грн</p>
+        </div>
+    </div>
+    <div id="modal8" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal8')">&times;</span>
+            <h2>Кросівки</h2>
+            <img src="sneakers.jpg" alt="Кросівки">
+            <p>Опис: Зручні кросівки для щоденного носіння.</p>
+            <p>Ціна: 1200 грн</p>
+        </div>
+    </div>
+    <div id="modal9" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal9')">&times;</span>
+            <h2>Ботинки</h2>
+            <img src="boots.jpg" alt="Ботинки">
+            <p>Опис: Міцні ботинки для холодної погоди.</p>
+            <p>Ціна: 2500 грн</p>
+        </div>
+    </div>
+    <div id="modal10" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal10')">&times;</span>
+            <h2>Розпродаж 1</h2>
+            <img src="sale_item1.jpg" alt="Розпродаж 1">
+            <p>Опис: Спеціальна пропозиція на популярний товар.</p>
+            <p>Ціна: 800 грн (знижка 20%)</p>
+        </div>
+    </div>
+    <div id="modal11" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal11')">&times;</span>
+            <h2>Розпродаж 2</h2>
+            <img src="sale_item2.jpg" alt="Розпродаж 2">
+            <p>Опис: Супер ціна на ще один популярний товар.</p>
+            <p>Ціна: 600 грн (знижка 30%)</p>
+        </div>
+    </div>
+    <div id="modal12" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal11')">&times;</span>
+            <h2>Розпродаж 2</h2>
+            <img src="sale_item2.jpg" alt="Розпродаж 2">
+            <p>Опис: Супер ціна на ще один популярний товар.</p>
+            <p>Ціна: 600 грн (знижка 30%)</p>
+        </div>
+    </div>
+    <div id="modal13" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal11')">&times;</span>
+            <h2>Розпродаж 2</h2>
+            <img src="sale_item2.jpg" alt="Розпродаж 2">
+            <p>Опис: Супер ціна на ще один популярний товар.</p>
+            <p>Ціна: 600 грн (знижка 30%)</p>
+        </div>
+    </div>
+    <div id="modal14" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal11')">&times;</span>
+            <h2>Розпродаж 2</h2>
+            <img src="sale_item2.jpg" alt="Розпродаж 2">
+            <p>Опис: Супер ціна на ще один популярний товар.</p>
+            <p>Ціна: 600 грн (знижка 30%)</p>
+        </div>
+    </div>
+    <div id="modal15" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('modal11')">&times;</span>
+            <h2>Розпродаж 2</h2>
+            <img src="sale_item2.jpg" alt="Розпродаж 2">
+            <p>Опис: Супер ціна на ще один популярний товар.</p>
+            <p>Ціна: 600 грн (знижка 30%)</p>
+        </div>
+    </div>
+    <div id="modal1buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal1buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal2buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal2buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal3buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal3buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal4buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal4buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal5buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal5buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal6buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal6buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal7buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal7buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal8buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal8buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal9buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal9buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal10buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal10buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal11buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal11buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal12buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal12buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal13buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal13buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal14buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal14buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    <div id="modal15buy" class="modal">
+        <div class="modal-content" style="display: flex; text-align: center;">
+            <span class="close" onclick="closeModal('modal15buy')">&times;</span>
+            <h2>Покупка успішна</h2>
+            <img style="width: 300px; display: flex; align-self: center;" src="https://cdn3.iconfinder.com/data/icons/squared-business-financial/64/checkmark-check-aproved-200.png" alt="Розпродаж 2">
+            <p style="margin: 50px; scale: 140%;">Скоро ваше замовлення з'явиться у кошику</p>
+        </div>
+    </div>
+    
+    
+    <script>
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            var modals = document.getElementsByClassName('modal');
+            for (var i = 0; i < modals.length; i++) {
+                if (event.target == modals[i]) {
+                    modals[i].style.display = "none";
+                }
+            }
+        }
+
+        function toggleMenu() {
+            var navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.querySelector('.menu');
+
+    menuToggle.addEventListener('change', function () {
+        if (menuToggle.checked) {
+            menu.style.display = 'flex';
+        } else {
+            menu.style.display = 'none';
+        }
+    });
+});
+</script>
+</body>
+</html>
